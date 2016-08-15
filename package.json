@@ -1,0 +1,30 @@
+{
+  "name": "cdi-mysql-express",
+  "version": "1.0.0",
+  "description": "Express MySQL Boilerplate",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jettcalleja/cdi-mysql-express.git"
+  },
+  "keywords": [
+    "express",
+    "mysql",
+    "boilerplate"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jettcalleja/cdi-mysql-express/issues"
+  },
+  "homepage": "https://github.com/jettcalleja/cdi-mysql-express#readme",
+  "dependencies": {
+    "anytv-node-mysql": "0.0.48",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "winston": "^2.2.0"
+  }
+}
