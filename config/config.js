@@ -1,7 +1,7 @@
 'use strict';
 
-const _  = require('lodash');
-const path = require('path');
+const _       = require('lodash');
+const path    = require('path');
 
 const config = {
     APP_NAME: 'CDI App Name',
@@ -11,6 +11,11 @@ const config = {
     PORT: 8000,
 
     SALT: 'NaCl',
+
+    UPLOAD_DIR: path.normalize(__dirname + '/../uploads/'),
+    ASSETS_DIR: path.normalize(__dirname + '/../assets'),
+    VIEWS_DIR: path.normalize(__dirname + '/../views'),
+    LOGS_DIR: path.normalize(__dirname + '/../logs'),
 
     use: (env) => {
         _.assign(config, require(__dirname + '/env/' + env));
