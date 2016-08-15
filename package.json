@@ -29,7 +29,10 @@
     "compression": "^1.6.2",
     "express": "^4.14.0",
     "helmet": "^2.1.2",
+    "lodash": "^4.15.0",
     "method-override": "^2.3.6",
+    "morgan": "^1.7.0",
+    "path": "^0.12.7",
     "winston": "^2.2.0"
   }
 }
