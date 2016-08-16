@@ -12,6 +12,10 @@ const config = {
 
     SALT: 'NaCl',
 
+    SECRET: 's3cr3t',
+
+    TOKEN_EXPIRATION: 60*60*24*30 * 7, // expires in 7 days
+
     UPLOAD_DIR: path.normalize(__dirname + '/../uploads/'),
     ASSETS_DIR: path.normalize(__dirname + '/../assets'),
     VIEWS_DIR: path.normalize(__dirname + '/../views'),
