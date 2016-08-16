@@ -1,21 +1,32 @@
 'use strict';
 
-const config      = require(__dirname + '/config/config');
-const util        = require(__dirname + '/helpers/util');
-const mysql       = require('anytv-node-mysql');
-const body_parser = require('body-parser');
-const winston     = require('winston');
-const express     = require('express');
+const config            = require(__dirname + '/config/config');
+const util              = require(__dirname + '/helpers/util');
+const web_socket        = require(__dirname + '/lib/web_socket');
+const mysql             = require('anytv-node-mysql');
+const body_parser       = require('body-parser');
+const winston           = require('winston');
+const express           = require('express');
+const http              = require('http');
+const WebSocketServer   = require('ws').Server;
 
 let app,
-    handler;
+    handler,
+    server,
+    wss;
 
 function start() {
     if (handler) {
         handler.close();
     }
 
+    // create express app
     app = express();
+    server          = http.createServer(app);
+    wss             = new WebSocketServer({ server: server });
+
+    // set web socket
+    web_socket(wss);
 
     // set config
     config.use(process.env.NODE_ENV);
@@ -47,7 +58,7 @@ function start() {
 
     winston.log('info', 'Server listening on port', config.PORT);
 
-    return app.listen(config.PORT);
+    return server.listen(config.PORT);
 }
 
 handler = start();
