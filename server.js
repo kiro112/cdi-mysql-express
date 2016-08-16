@@ -1,7 +1,7 @@
 'use strict';
 
-// import config       from  __dirname + '/config/config';
-// import util         from  __dirname + '/helpers/util';
+const config      = require(__dirname + '/config/config');
+const util        = require(__dirname + '/helpers/util');
 const mysql       = require('anytv-node-mysql');
 const body_parser = require('body-parser');
 const winston     = require('winston');
@@ -41,8 +41,9 @@ function start() {
 
     winston.log('verbose', 'Binding custom middlewares');
     app.use(require('anytv-node-cors')(config.CORS));
-    app.use(require('anytv-node-error-handler')(winston));
+    app.use(require(__dirname + '/lib/res_extended')());
     app.use(require(__dirname + '/config/router')(express.Router()));
+    app.use(require('anytv-node-error-handler')(winston));
 
     winston.log('info', 'Server listening on port', config.PORT);
 
