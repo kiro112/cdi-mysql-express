@@ -13,7 +13,7 @@ cluster.on('exit', function(worker, code, signal) {
     cluster.fork({cpu_number: cpu}).on('online', () => {
 
         let workers  = cluster.workers,
-        keys     = Object.keys(workers);
+        keys         = Object.keys(workers);
         // Get the last element of cluster workers 
         // and assign its cpu number
         workers[ keys[ keys.length - 1 ] ].cpu_number = cpu;
