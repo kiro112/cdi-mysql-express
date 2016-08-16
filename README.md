@@ -27,5 +27,5 @@ Requirements
   nodemon cluster.js server.js
   ```
 
-## Special Thanks
-(https://www.bithound.io/github/anyTV/anytv-node-boilerplate), especially rvnjl <3
+<!-- ## Special Thanks
+(https://www.bithound.io/github/anyTV/anytv-node-boilerplate), especially rvnjl <3 -->
