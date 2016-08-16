@@ -3,6 +3,7 @@
 const mysql     = require('anytv-node-mysql');
 const winston   = require('winston');
 const util      = require(__dirname + '/../helpers/util');
+const config    = require(__dirname + '/../config/config');
 
 
 /**
@@ -48,8 +49,8 @@ exports.create = (req, res, next) => {
         mysql.use('master')
         .query (
             ['INSERT INTO user(email, password, fullname)',
-             'VALUES (?, ?, ?)'].join(' '),
-             [body.email, body.password, body.fullname],
+             'VALUES (?, PASSWORD(CONCAT(MD5(?), ?)), ?)'].join(' '),
+             [body.email, body.password, config.SALT, body.fullname],
              send_response
         )
         .end();
