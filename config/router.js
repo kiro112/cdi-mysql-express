@@ -14,7 +14,7 @@ module.exports = (router) => {
 
     router.all('*', (req, res) => {
         res.status(404)
-           .send(message: 'Nothing to do here.');
+           .send({message: 'Nothing to do here.'});
     });
 
     return router;
