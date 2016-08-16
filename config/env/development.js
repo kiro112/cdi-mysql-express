@@ -18,5 +18,11 @@ module.exports = {
         user: 'root',
         password: '',
         database: 'test'
+    },
+
+    REDISDB: {
+        host: 'localhost',
+        port: 6379
     }
+    
 };
