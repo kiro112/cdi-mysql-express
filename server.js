@@ -36,6 +36,9 @@ function start() {
     winston.cli();
     winston.level = config.LOG_LEVEL || 'silly';
 
+    // set redis
+    app.use(require(__dirname + '/lib/redisdb')());
+    
     // set mysql
     mysql.set_logger(winston)
          .add('master', config.MASTER_DB);
@@ -50,7 +53,7 @@ function start() {
     app.use(body_parser.json());
     app.use(require('compression')());
     
-    
+
     winston.log('verbose', 'Binding custom middlewares');
     app.use(require('anytv-node-cors')(config.CORS));
     app.use(require(__dirname + '/lib/res_extended')());
