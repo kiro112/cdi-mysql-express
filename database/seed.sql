@@ -1,3 +1,5 @@
+USE test;
+
 INSERT INTO users VALUES (
     'cdi@codemagnus.com',
     'cdip4sSw0rd',
