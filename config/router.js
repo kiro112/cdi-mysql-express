@@ -12,6 +12,9 @@ module.exports = (router) => {
     router.put  ('/users/:id',                        __.user.update);
     router.del  ('/users/:id',                        __.user.delete);
 
+    router.post ('/auth/login',                       __.auth.login);
+    router.post ('/auth/logout',                      __.auth.logout);
+
     router.all('*', (req, res) => {
         res.status(404)
            .send({message: 'Nothing to do here.'});
