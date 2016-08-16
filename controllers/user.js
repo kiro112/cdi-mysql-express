@@ -2,7 +2,7 @@
 
 const mysql     = require('anytv-node-mysql');
 const winston   = require('winston');
-const util      = require(__dirname + '/../helper/util');
+const util      = require(__dirname + '/../helpers/util');
 
 
 /**
