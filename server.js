@@ -50,6 +50,8 @@ function start() {
     return app.listen(config.PORT);
 }
 
+handler = start();
+
 module.exports = {
     app,
     start,
