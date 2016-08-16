@@ -112,7 +112,7 @@ exports.retrieve = (req, res, next) => {
 
         if (!result.length) {
             return res.status(404)
-                .error({'USER404', 'User not found'})
+                .error('ZERO_RES', 'User not found')
                 .send();
         }
 
