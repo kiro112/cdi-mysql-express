@@ -95,7 +95,7 @@ exports.create = (req, res, next) => {
 exports.retrieve = (req, res, next) => {
 
     function start () {
-        mysql.use('my_db')
+        mysql.use('master')
             .query(
                 'SELECT * FROM users WHERE id = ? LIMIT 1;',
                 [req.params.id],
