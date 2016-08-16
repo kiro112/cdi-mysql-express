@@ -1,6 +1,7 @@
 'use strict';
 
-const importer = require('anytv-node-importer');
+const importer     = require('anytv-node-importer');
+const verify_token = require(__dirname+'/../controller/auth').verify_token;
 
 module.exports = (router) => {
     const __   = importer.dirloadSync(__dirname + '/../controllers');
@@ -13,7 +14,7 @@ module.exports = (router) => {
     router.del  ('/users/:id',                        __.user.delete);
 
     router.post ('/auth/login',                       __.auth.login);
-    router.post ('/auth/logout',                      __.auth.logout);
+    router.post ('/auth/logout',       verify_token,  __.auth.logout);
 
     router.all('*', (req, res) => {
         res.status(404)
