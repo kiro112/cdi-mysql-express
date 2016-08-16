@@ -21,3 +21,8 @@ Requirements
   sudo npm i -g nodemon
   sudo npm start
   ```
+
+4. Using cluster:
+  ```sh
+  nodemon cluster.js server.js
+  ```

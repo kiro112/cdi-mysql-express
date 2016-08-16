@@ -4,6 +4,7 @@
   "description": "Express MySQL Boilerplate",
   "main": "server.js",
   "scripts": {
+    "start": "npm install && nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
