@@ -18,7 +18,7 @@ function start() {
     app = express();
 
     // set config
-    config.use(procces.env.NODE_ENV);
+    config.use(process.env.NODE_ENV);
     app.set('env', config.ENV);
 
     // set logger
