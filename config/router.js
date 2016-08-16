@@ -7,8 +7,8 @@ module.exports = (router) => {
 
     router.del = router.delete;
 
-    router.post ('/users',                            __.user.register);
-    router.get  ('/users/:id',                        __.user.get_user);
+    router.post ('/users',                            __.user.create);
+    router.get  ('/users/:id',                        __.user.retrieve);
     router.put  ('/users/:id',                        __.user.update);
     router.del  ('/users/:id',                        __.user.delete);
 
