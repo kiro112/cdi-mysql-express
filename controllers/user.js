@@ -39,7 +39,7 @@ exports.create = (req, res, next) => {
     function create_user (err, result, args, last_query) {
         if (err) {
             winston.error('Error in getting user', err, last_query);
-            return next(err);
+            return res.error('INV_QUERY', err);
         }
 
         if (result.length) {
@@ -60,7 +60,7 @@ exports.create = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in creating user', last_query);
-            return next(err);
+            return res.error('INV_QUERY', err);
         }
 
         if (!result.affectedRows) {
@@ -108,7 +108,7 @@ exports.retrieve = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in selecting users', last_query);
-            return next(err);
+            return res.error('INV_QUERY', last_query);
         }
 
         if (!result.length) {
@@ -140,12 +140,32 @@ exports.update = (req, res, next) => {
     const data = util._get
         .form_data({
             email: '',
-            password: '',
             fullname: ''
         })
         .from(req.body);
 
     function start() {
+
+        mysql.use('master')
+        .query (
+            ['SELECT * FROM users',
+             'WHERE id != ? AND email = ? '].join(' '),
+             [req.params.id, data.email],
+             update_user
+        )
+        .end();
+    }
+
+    function update_user (err, result, args, last_query) {
+        if (err) {
+            winston.error('Error in getting user', err, last_query);
+            return res.error('INV_QUERY', err);
+        }
+        
+        if (result.length) {
+            return res.error('INVALID_EMAIL', 'Email is already in use');
+        }
+
         mysql.use('master')
         .query (
             ['UPDATE users SET ? WHERE id=?'].join(' '),
@@ -153,12 +173,13 @@ exports.update = (req, res, next) => {
             send_response
         )
         .end();
+
     }
 
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in update user', last_query);
-            return next(err);
+            return res.error('INV_QUERY', last_query);
         }
 
         if (!result.affectedRows) {
@@ -200,7 +221,7 @@ exports.delete = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in retrieving user', last_query);
-            return next(err);
+            return res.error('INV_QUERY', last_query);
         }
 
         if (result.affectedRows === 0) {

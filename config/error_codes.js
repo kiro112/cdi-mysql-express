@@ -13,6 +13,7 @@ module.exports = {
         code: 403,
         message: 'Unauthorized access'
     },
+    INV_QUERY: 'Error in query',
     LOG_FAIL: 'Log-In failed',
     INV_USER: 'Invalid username',
     INV_PASS: 'Invalid password',
