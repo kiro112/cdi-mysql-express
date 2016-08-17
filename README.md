@@ -8,11 +8,10 @@ Requirements
 
 ## Running the application
 1. Download zip
-2. Import `database/seed.sql` and `database/migrate.sql`
+2. Import `database/schema.sql` and `database/seed.sql`
   ```sh
+  mysql -uroot < database/schema.sql.sql
   mysql -uroot < database/seed.sql
-  mysql -uroot < database/migrate.sql
-  mysql -uroot < database/routines.sql
   ```
 
 3. Run this commands :
