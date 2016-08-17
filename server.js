@@ -38,7 +38,7 @@ function start() {
 
     // set redis
     app.use(require(__dirname + '/lib/redisdb')());
-    
+
     // set mysql
     mysql.set_logger(winston)
          .add('master', config.MASTER_DB);
@@ -58,7 +58,7 @@ function start() {
     app.use(require('anytv-node-cors')(config.CORS));
     app.use(require(__dirname + '/lib/res_extended')());
     app.use(require(__dirname + '/config/router')(express.Router()));
-    app.use(require('anytv-node-error-handler')(winston));
+    app.use(require(__dirname + '/helpers/error_logger')(winston));
 
     winston.log('info', 'Server listening on port', config.PORT);
 
