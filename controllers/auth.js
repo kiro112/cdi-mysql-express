@@ -21,7 +21,7 @@ exports.login = (req, res, next) => {
             .query(
                 ['SELECT id, IF(PASSWORD(CONCAT(MD5(?), ?))',
                 '= password, TRUE, FALSE) AS isPasswordValid',
-                'email, fullname,',
+                'email, fullname FROM users',
                 'WHERE email = ?'].join(' '),
                 [data.password, config.SALT, data.email],
                 send_response
