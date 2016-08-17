@@ -21,9 +21,9 @@ function start() {
     }
 
     // create express app
-    app = express();
-    server          = http.createServer(app);
-    wss             = new WebSocketServer({ server: server });
+    app     = express();
+    server  = http.createServer(app);
+    wss     = new WebSocketServer({ server: server });
 
     // set web socket
     web_socket(wss);
