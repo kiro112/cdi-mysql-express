@@ -18,7 +18,7 @@ exports.login = (req, res, next) => {
             return res.error('INC_DATA', data.message);
         }
 
-        mysql.use('slave_others')
+        mysql.use('master')
             .query(
                 ['SELECT id, IF(PASSWORD(CONCAT(MD5(?), ?))',
                 '= password, TRUE, FALSE) AS isPasswordValid',
@@ -35,7 +35,7 @@ exports.login = (req, res, next) => {
 
         if (err) {
             winston.error('Error in logging in', last_query);
-            return next(err);
+            return res.error('INV_QUERY', err);
         }
 
         if (!result.length) {
