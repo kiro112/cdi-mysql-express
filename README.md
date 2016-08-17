@@ -24,6 +24,7 @@ Requirements
 4. Using cluster:
   ```sh
   nodemon cluster.js server.js
+  forever start cluster.js server.js
   ```
 
 <!-- ## Special Thanks
