@@ -10,7 +10,7 @@ Requirements
 1. Download zip
 2. Import `database/schema.sql` and `database/seed.sql`
   ```sh
-  mysql -uroot < database/schema.sql.sql
+  mysql -uroot < database/schema.sql
   mysql -uroot < database/seed.sql
   ```
 
