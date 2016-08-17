@@ -1,7 +1,7 @@
 'use strict';
 
 const importer     = require('anytv-node-importer');
-const verify_token = require(__dirname+'/../controller/auth').verify_token;
+const verify_token = require(__dirname+'/../controllers/auth').verify_token;
 
 module.exports = (router) => {
     const __   = importer.dirloadSync(__dirname + '/../controllers');
