@@ -148,7 +148,7 @@ exports.update = (req, res, next) => {
     function start() {
         mysql.use('master')
         .query (
-            ['UPDATE user SET ? WHERE id=?'].join(' '),
+            ['UPDATE users SET ? WHERE id=?'].join(' '),
             [data, req.params.id],
             send_response
         )
