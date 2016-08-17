@@ -189,7 +189,7 @@ exports.delete = (req, res, next) => {
 
         mysql.use('master')
         .query (
-            ["UPDATE user SET deleted=NOW()",
+            ["UPDATE users SET deleted=NOW()",
             "WHERE deleted IS NULL AND id=?"].join(' '),
             [req.params.id],
             send_response

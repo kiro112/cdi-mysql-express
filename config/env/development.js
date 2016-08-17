@@ -16,7 +16,7 @@ module.exports = {
     MASTER_DB: {
         host: 'localhost',
         user: 'root',
-        password: '',
+        password: 'root',
         database: 'test'
     },
 
@@ -24,5 +24,5 @@ module.exports = {
         host: 'localhost',
         port: 6379
     }
-    
+
 };
