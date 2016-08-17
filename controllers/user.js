@@ -28,8 +28,8 @@ exports.create = (req, res, next) => {
 
         mysql.use('master')
         .query (
-            ['SELECT * FROM user',
-             'WHERE user.email = ? '].join(' '),
+            ['SELECT * FROM users',
+             'WHERE email = ? '].join(' '),
              body.email,
              create_user
         )
@@ -42,13 +42,13 @@ exports.create = (req, res, next) => {
             return next(err);
         }
 
-        if (result[0].id) {
+        if (result.length) {
             return res.error('INVALID_EMAIL', 'Email is already in use');
         }
 
         mysql.use('master')
         .query (
-            ['INSERT INTO user(email, password, fullname)',
+            ['INSERT INTO users(email, password, fullname)',
              'VALUES (?, PASSWORD(CONCAT(MD5(?), ?)), ?)'].join(' '),
              [body.email, body.password, config.SALT, body.fullname],
              send_response
@@ -69,9 +69,9 @@ exports.create = (req, res, next) => {
 
         res.item({
             message: 'Successfully created user',
-            id:         result[0].id,
+            id:         result.insertId,
             email:      body.email,
-            password:   body.password
+            password:   body.passwor
         })
         .send();
     }
