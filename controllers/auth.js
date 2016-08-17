@@ -1,6 +1,7 @@
 'use strict';
 
 const jwt         = require('jsonwebtoken');
+const util        = require(__dirname + '/../helpers/util');
 const config      = require(__dirname + '/../config/config');
 
 exports.login = (req, res, next) => {
