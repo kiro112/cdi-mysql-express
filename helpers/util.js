@@ -3,15 +3,12 @@
     Utilities
 */
 
-function hash (string, algo) {
+function hash (string, hash) {
     return require('crypto')
-        .createHash(algo || 'sha1')
+        .createHash(hash || 'sha1')
         .update('' + string)
         .digest('hex');
 }
-
-
-
 
 /**
  * Data validator
@@ -27,11 +24,35 @@ function hash (string, algo) {
  * @param2 source (req.body, req.query, req.params)
  **/
 function get_data (sample, source, ref) {
+    const final_data = {};
     let has_error = false;
-    let final = {};
     let temp;
 
     ref = ref || '';
+
+    function validate_primitive_value (sample, prop, source, source_prop, ref) {
+        let source_type = typeof source[source_prop];
+        const type = typeof sample[prop];
+
+        if (type === 'string' && sample[prop]) {
+            source_type = type;
+            source[source_prop] = sample[prop];
+        }
+
+        if ((source_type === 'undefined' && prop[0] !== '_') || (source_type === 'string' && !source[source_prop])) {
+            return new Error(ref + ' is missing');
+        }
+
+        if (source_type !== 'undefined' && source_type !== type) {
+            return new Error(ref + ' invalid type');
+        }
+
+        if (type === 'object') {
+            return get_data(sample[prop], source[source_prop], ref);
+        }
+
+        return source[source_prop];
+    }
 
     if (typeof sample !== typeof source || (Array.isArray(sample) !== Array.isArray(source))) {
         return new Error('Sample-Source type mismatch');
@@ -50,46 +71,37 @@ function get_data (sample, source, ref) {
     }
 
     for (let prop in sample) {
-        let source_prop;
-        let data;
+        if (sample.hasOwnProperty(prop)) {
+            let source_prop = prop;
+            let data;
 
-        source_prop = prop[0] === '_'
-            ? prop.slice(1)
-            : prop;
+            if (prop[0] === '_') {
+                source_prop = prop.slice(1);
+            }
 
-        data = validate_primitive_value(sample, prop, source, source_prop, (ref ? ref + '.' : '') + prop);
+            data = validate_primitive_value(sample, prop, source, source_prop, (ref ? ref + '.' : '') + prop);
 
-        if (data instanceof Error) {
-            return data;
-        }
+            if (data instanceof Error) {
+                return data;
+            }
 
-        if (typeof data !== 'undefined') {
-            final[source_prop] = data;
+            if (typeof data !== 'undefined') {
+                final_data[source_prop] = data;
+            }
         }
     }
 
-    return final;
+    return final_data;
 }
 
 
-function validate_primitive_value (_sample, prop, _source, source_prop, _ref) {
-    const source_type = typeof _source[source_prop];
-    const type = typeof _sample[prop];
-
-    if ((source_type === 'undefined' || (source_type === 'string' && !_source[source_prop])) && prop[0] !== '_') {
-        return new Error(_ref + ' is missing');
+const _get = {
+    form_data: (sample) => {
+        const from = (source) => get_data(sample, source);
+        return {from};
     }
+};
 
-    if (source_type !== 'undefined' && source_type !== type) {
-        return new Error(_ref + ' invalid type');
-    }
-
-    if (type === 'object' && (prop[0] !== '_' || source_type !== 'undefined')) {
-        return get_data(_sample[prop], _source[source_prop], _ref);
-    }
-
-    return _source[source_prop];
-}
 
 function random_string (i) {
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -140,6 +152,7 @@ function split (a, n) {
 
 function get_log_stream (dir) {
     const file_stream_rotator = require('file-stream-rotator');
+    const moment = require('moment');
     const proc_id = process.env.cpu_number || 0;
 
     return file_stream_rotator.getStream({
@@ -155,10 +168,20 @@ function clone (obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
+function is_SN (student_number) {
+    const current_year = new Date().getFullYear().toString();
+    const year_regex = '20([0-' + (current_year[2]-1) + '][0-9]|' + current_year[2] + '[0-' + current_year[3] + '])';
+    return new RegExp('(19[5-9][0-9]|' + year_regex + ')-\\d{5}')
+        .test(student_number);
+}
 
+function is_email (email) {
+    return /^[a-z0-9._%+-]+@[a-z0-9-]+\.[a-z]{2,3}$/.test(email.toLowerCase());
+}
 
 module.exports = {
     hash,
+    _get,
     get_data,
     random_string,
     pad,
@@ -166,5 +189,7 @@ module.exports = {
     caps_first,
     split,
     get_log_stream,
-    clone
+    clone,
+    is_SN,
+    is_email
 };

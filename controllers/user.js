@@ -71,7 +71,7 @@ exports.create = (req, res, next) => {
             message: 'Successfully created user',
             id:         result.insertId,
             email:      body.email,
-            password:   body.passwor
+            password:   body.password
         })
         .send();
     }
