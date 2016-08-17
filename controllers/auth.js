@@ -1,5 +1,7 @@
 'use strict';
 
+const mysql       = require('anytv-node-mysql');
+const winston     = require('winston');
 const jwt         = require('jsonwebtoken');
 const util        = require(__dirname + '/../helpers/util');
 const config      = require(__dirname + '/../config/config');
@@ -21,9 +23,9 @@ exports.login = (req, res, next) => {
         mysql.use('master')
             .query(
                 ['SELECT id, IF(PASSWORD(CONCAT(MD5(?), ?))',
-                '= password, TRUE, FALSE) AS isPasswordValid',
+                '= password, TRUE, FALSE) AS isPasswordValid,',
                 'email, fullname FROM users',
-                'WHERE email = ?'].join(' '),
+                'WHERE email LIKE ?'].join(' '),
                 [data.password, config.SALT, data.email],
                 send_response
             )
@@ -94,7 +96,7 @@ exports.verify_token = (req, res, next) => {
             else {
                 const redis = req.redis;
                 redis.get(token, (err, userId) => {
-                    if (err || user.id !== userId) {
+                    if (err || user.id.toString() !== userId) {
                         return res.status(404)
                                .error('UNAUTH', 'Failed to authenticate token.')
                                .send();
