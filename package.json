@@ -24,7 +24,6 @@
   "homepage": "https://github.com/jettcalleja/cdi-mysql-express#readme",
   "dependencies": {
     "anytv-node-cors": "0.0.7",
-    "anytv-node-error-handler": "0.0.10",
     "anytv-node-importer": "0.0.0",
     "anytv-node-mysql": "0.0.48",
     "body-parser": "^1.15.2",
