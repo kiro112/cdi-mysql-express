@@ -35,7 +35,7 @@ exports.login = (req, res, next) => {
 
         if (err) {
             winston.error('Error in logging in', last_query);
-            return res.error('INV_QUERY', err);
+            return next(err);
         }
 
         if (!result.length) {
