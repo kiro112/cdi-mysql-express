@@ -17,5 +17,6 @@ module.exports = {
     INV_USER: 'Invalid username',
     INV_PASS: 'Invalid password',
     INV_FLD:  'Invalid data received',
+    INVALID_EMAIL: 'Email is already in use',
     DUP_ENTRY:'Duplicate insert entry'
 };
