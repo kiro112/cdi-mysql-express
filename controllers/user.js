@@ -39,7 +39,7 @@ exports.create = (req, res, next) => {
     function create_user (err, result, args, last_query) {
         if (err) {
             winston.error('Error in getting user', err, last_query);
-            return res.error('INV_QUERY', err);
+            return next(err);
         }
 
         if (result.length) {
@@ -60,7 +60,7 @@ exports.create = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in creating user', last_query);
-            return res.error('INV_QUERY', err);
+            return next(err);
         }
 
         if (!result.affectedRows) {
@@ -108,7 +108,7 @@ exports.retrieve = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in selecting users', last_query);
-            return res.error('INV_QUERY', last_query);
+            return next(err);
         }
 
         if (!result.length) {
@@ -159,9 +159,9 @@ exports.update = (req, res, next) => {
     function update_user (err, result, args, last_query) {
         if (err) {
             winston.error('Error in getting user', err, last_query);
-            return res.error('INV_QUERY', err);
+            return next(err);
         }
-        
+
         if (result.length) {
             return res.error('INVALID_EMAIL', 'Email is already in use');
         }
@@ -179,7 +179,7 @@ exports.update = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in update user', last_query);
-            return res.error('INV_QUERY', last_query);
+            return next(err);
         }
 
         if (!result.affectedRows) {
@@ -221,7 +221,7 @@ exports.delete = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         if (err) {
             winston.error('Error in retrieving user', last_query);
-            return res.error('INV_QUERY', last_query);
+            return next(err);
         }
 
         if (result.affectedRows === 0) {
