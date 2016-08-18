@@ -61,7 +61,7 @@ exports.login = (req, res, next) => {
             token:      token
         };
 
-        req.redis.set(token, user.id.toString());
+        req.redis.sadd(user.id.toString(), token);
 
         res.set('x-access-token', token)
            .item(data)
@@ -73,9 +73,12 @@ exports.login = (req, res, next) => {
 };
 
 exports.logout = (req, res, next) => {
-    let token = req.body.token || req.query.token || req.headers['x-access-token'];
+    let body  = req.body,
+        token = body.token,
+        id    = body.user.id.toString();
+
     if (token) {
-        req.redis.del(token);
+        req.redis.srem(id, token);
         res.item({message: 'User successfully logged out'})
            .send();
     } else {
@@ -86,22 +89,23 @@ exports.logout = (req, res, next) => {
 };
 
 exports.verify_token = (req, res, next) => {
-    let token = req.body.token || req.query.token || req.headers['x-access-token'];
+    let token = req.body.token || req.query.token || req.headers['x-access-token'],
+        _id   = req.body._id   || req.query._id   || req.headers['x-access-id'] || null;
 
     if (token) {
         jwt.verify(token, config.SECRET, (err, user) => {
-            if (err) return res.status(404)
+            if (err || user.id !== _id) return res.status(404)
                                .error('UNAUTH', 'Failed to authenticate token.')
                                .send();
             else {
                 const redis = req.redis;
-                redis.get(token, (err, userId) => {
-                    if (err || user.id.toString() !== userId) {
+                redis.sismember(user.id.toString(), token, (err, isMember) => {
+                    if (err || !isMember) {
                         return res.status(404)
                                .error('UNAUTH', 'Failed to authenticate token.')
                                .send();
-                    } 
-                    req.body.user = user;
+                    }
+                    req.body.user  = user;
                     req.body.token = token;
                     next();
                 });
