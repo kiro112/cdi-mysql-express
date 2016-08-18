@@ -101,7 +101,8 @@ exports.verify_token = (req, res, next) => {
                                .error('UNAUTH', 'Failed to authenticate token.')
                                .send();
                     } 
-                    req.user = user;
+                    req.body.user = user;
+                    req.body.token = token;
                     next();
                 });
             }
