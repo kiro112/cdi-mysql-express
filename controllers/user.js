@@ -278,7 +278,7 @@ exports.change_password = (req, res, next) => {
 
         mysql.use('master')
         .query(
-            'UPDATE users SET password = PASSWORD(CONCAT(MD5(?), ?)) WHERE password = PASSWORD(CONCAT(MD5(?), ?)) AND id = ? LIMIT 1;',
+            'UPDATE users SET password = PASSWORD(CONCAT(MD5(?), ?)), date_updated = NOW() WHERE password = PASSWORD(CONCAT(MD5(?), ?)) AND id = ? LIMIT 1;',
             [data.newPassword, config.SALT, data.currentPassword, config.SALT, id],
             send_response
         )
