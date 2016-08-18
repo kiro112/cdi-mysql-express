@@ -14,6 +14,7 @@ module.exports = {
         message: 'Unauthorized access'
     },
     INV_QUERY: 'Error in query',
+    NO_TOKEN: 'No token is provided',
     LOG_FAIL: 'Log-In failed',
     INV_USER: 'Invalid username',
     INV_PASS: 'Invalid password',

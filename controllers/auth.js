@@ -79,7 +79,7 @@ exports.logout = (req, res, next) => {
         res.item({message: 'User successfully logged out'})
            .send();
     } else {
-        res.error({message: 'invalid token'})
+        res.error('NO_TOKEN', 'No Token is provided')
            .status(403)
            .send();
     }
@@ -107,7 +107,7 @@ exports.verify_token = (req, res, next) => {
             }
         });
     } else {
-        res.error({message: 'invalid token'})
+        res.error('NO_TOKEN', 'No Token is provided')
            .status(403)
            .send();
     }
