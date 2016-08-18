@@ -79,7 +79,7 @@ exports.logout = (req, res, next) => {
         res.item({message: 'User successfully logged out'})
            .send();
     } else {
-        res.error('NO_TOKEN', 'No Token is provided')
+        res.error('NO_TOKEN', 'Please provide valid token in body form')
            .status(403)
            .send();
     }
@@ -107,7 +107,7 @@ exports.verify_token = (req, res, next) => {
             }
         });
     } else {
-        res.error('NO_TOKEN', 'No Token is provided')
+        res.error('NO_TOKEN', 'Please provide valid token in body form')
            .status(403)
            .send();
     }
