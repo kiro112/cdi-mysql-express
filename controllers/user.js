@@ -22,9 +22,19 @@ const config    = require(__dirname + '/../config/config');
  * @apiSuccess {String} date_updated Time when last update occurred
  */
 exports.create = (req, res, next) => {
-    let body = req.body;
+    const data = util._get
+        .form_data({
+            email: '',
+            password: '',
+            fullname: ''
+        })
+        .from(req.body);
 
     function start() {
+
+        if (data instanceof Error) {
+            return res.error('INC_DATA', data.message);
+        }
 
         mysql.use('master')
         .query (
@@ -145,6 +155,10 @@ exports.update = (req, res, next) => {
         .from(req.body);
 
     function start() {
+
+        if (data instanceof Error) {
+            return res.error('INC_DATA', data.message);
+        }
 
         mysql.use('master')
         .query (
