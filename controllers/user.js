@@ -254,13 +254,17 @@ exports.delete = (req, res, next) => {
 
 
 exports.change_password = (req, res, next) => {
-    const data = util._get
-        .form_data({
-            _currentPassword: '',
-            newPassword: '',
-            confirmPassword: ''
-        })
-        .from(req.body);
+    const body  = req.body,
+          redis = req.redis,
+          id    = body.user.id,
+          data  = util._get
+                    .form_data({
+                        currentPassword: '',
+                        newPassword: '',
+                        confirmPassword: ''
+                    })
+                    .from(req.body);
+          
 
     function start () {
 
@@ -272,6 +276,33 @@ exports.change_password = (req, res, next) => {
             return res.error('INV_PASS', 'Invalid password confirmation');
         }
 
+        mysql.use('master')
+        .query(
+            'UPDATE users SET password = PASSWORD(CONCAT(MD5(?), ?)) WHERE password = PASSWORD(CONCAT(MD5(?), ?)) AND id = ? LIMIT 1;',
+            [data.newPassword, config.SALT, data.currentPassword, config.SALT, id],
+            send_response
+        )
+        .end();
+
+    }
+
+    function send_response (err, result, args, last_query) {
+        if (err) {
+            winston.error('Error in retrieving user', last_query);
+            return next(err);
+        }
+
+        if (result.affectedRows === 0) {
+            return res.error('NO_PASS', 'Please check current password');
+        }
+
+        // Delete all active tokens
+        // and remain the current one
+        redis.del(id.toString());
+        redis.sadd(id.toString(), body.token);
+
+        res.item({message: 'Password successfully updated'})
+           .send();
     }
 
     start();

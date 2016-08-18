@@ -12,7 +12,7 @@ module.exports = (router) => {
     router.get  ('/users/:id',                              __.user.retrieve);
     router.put  ('/users/:id',                              __.user.update);
     router.del  ('/users/:id',                              __.user.delete);
-    router.put  ('/users/change_password',    verify_token, __.user.change_password);
+    router.post ('/users/change_password',    verify_token, __.user.change_password);
 
     router.post ('/auth/login',                             __.auth.login);
     router.post ('/auth/logout',              verify_token, __.auth.logout);
