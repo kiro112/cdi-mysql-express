@@ -251,3 +251,28 @@ exports.delete = (req, res, next) => {
     start();
 
 };
+
+
+exports.change_password = (req, res, next) => {
+    const data = util._get
+        .form_data({
+            _currentPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+        })
+        .from(req.body);
+
+    function start () {
+
+        if (data instanceof Error) {
+            return res.error('INC_DATA', data.message);
+        }
+
+        if (data.newPassword != data.confirmPassword) {
+            return res.error('INV_PASS', 'Invalid password confirmation');
+        }
+
+    }
+
+    start();
+};
