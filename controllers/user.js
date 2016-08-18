@@ -40,7 +40,7 @@ exports.create = (req, res, next) => {
         .query (
             ['SELECT * FROM users',
              'WHERE email = ? '].join(' '),
-             body.email,
+             data.email,
              create_user
         )
         .end();
@@ -60,7 +60,7 @@ exports.create = (req, res, next) => {
         .query (
             ['INSERT INTO users(email, password, fullname)',
              'VALUES (?, PASSWORD(CONCAT(MD5(?), ?)), ?)'].join(' '),
-             [body.email, body.password, config.SALT, body.fullname],
+             [data.email, data.password, config.SALT, data.fullname],
              send_response
         )
         .end();
@@ -80,8 +80,8 @@ exports.create = (req, res, next) => {
         res.item({
             message: 'Successfully created user',
             id:         result.insertId,
-            email:      body.email,
-            password:   body.password
+            email:      data.email,
+            password:   data.password
         })
         .send();
     }
@@ -159,6 +159,8 @@ exports.update = (req, res, next) => {
         if (data instanceof Error) {
             return res.error('INC_DATA', data.message);
         }
+
+        data.date_updated = new Date();
 
         mysql.use('master')
         .query (
