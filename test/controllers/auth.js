@@ -3,10 +3,10 @@ process.env.NODE_ENV = 'development';
 
 const should  = require('chai').should();
 const request = require('supertest');
-const server  = require(__dirname+ '/../server').app;
+const server  = require(__dirname+ '/../../server').app;
 const api     = request.agent(server);
 
-describe('Authentication Login' () => {
+describe('Authentication Login', () => {
 
     let userId,
         token;
@@ -20,10 +20,10 @@ describe('Authentication Login' () => {
                 should.exist(res);
                 res.body.should.have.property('success', false);
                 res.body.should.have.property('errors');
-                res.body.errors.should.have.property('context', 'Invalid username');
+                res.body.errors[0].should.have.property('context', 'Invalid username');
                 done();
            });
     });
 
-    
+
 });
