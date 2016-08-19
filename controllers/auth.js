@@ -20,6 +20,8 @@ exports.login = (req, res, next) => {
             return res.error('INC_DATA', data.message);
         }
 
+        data.email = data.email.toLowerCase();
+
         mysql.use('master')
             .query(
                 ['SELECT id, IF(PASSWORD(CONCAT(MD5(?), ?))',
