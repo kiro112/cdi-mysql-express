@@ -89,27 +89,32 @@ exports.logout = (req, res, next) => {
 };
 
 exports.verify_token = (req, res, next) => {
-    let token = req.body.token || req.query.token || req.headers['x-access-token'],
-        _id   = req.body._id   || req.query._id   || req.headers['x-access-id'] || null;
+    let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (token) {
+
         jwt.verify(token, config.SECRET, (err, user) => {
-            if (err || user.id !== _id) return res.status(404)
-                               .error('UNAUTH', 'Failed to authenticate token.')
-                               .send();
-            else {
-                const redis = req.redis;
-                redis.sismember(user.id.toString(), token, (err, isMember) => {
+
+            const redis  = req.redis,
+                  userId = user.id.toString();
+
+            if (err) {
+                return res.status(404)
+                          .error('UNAUTH', 'Failed to authenticate token.')
+                          .send();
+            } else {
+                redis.sismember(userId, token, (err, isMember) => {
                     if (err || !isMember) {
                         return res.status(404)
-                               .error('UNAUTH', 'Failed to authenticate token.')
-                               .send();
+                                  .error('UNAUTH', 'Failed to authenticate token.')
+                                  .send();
                     }
                     req.body.user  = user;
                     req.body.token = token;
                     next();
                 });
             }
+
         });
     } else {
         res.error('NO_TOKEN', 'Please provide valid token in body form')
