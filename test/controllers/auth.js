@@ -1,5 +1,5 @@
 'use strict';
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'local';
 
 const should  = require('chai').should();
 const request = require('supertest');
