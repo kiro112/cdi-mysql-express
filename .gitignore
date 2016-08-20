@@ -7,3 +7,4 @@ node_modules/
 *.pid
 *.gz
 dump.rdb
+config/env/local.js
