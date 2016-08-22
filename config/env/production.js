@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    ENV: 'development',
+    ENV: 'production',
     LOG_LEVEL: 'info',
 
     CORS: {
