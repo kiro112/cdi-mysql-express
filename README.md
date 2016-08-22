@@ -14,14 +14,16 @@ Requirements
   mysql -uroot < database/seed.sql
   ```
 
-3. Run this commands :
+3. Make sure redis server is running in correct PORT and HOST
+
+4. Run this commands :
   ```sh
   sudo npm i -g forever
   sudo npm i -g nodemon
   sudo npm start
   ```
 
-4. Using cluster:
+5. Using cluster:
   ```sh
   nodemon cluster.js
   forever start cluster.js
