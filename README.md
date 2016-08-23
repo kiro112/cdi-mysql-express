@@ -219,8 +219,13 @@ exports.update_user = (req, res, next) => {
 Notes:
 - use `res.warn(status, obj)` or `res.warn(obj)`  instead of `next(error)` if the error is caused by the API caller
 
+License
+-----
+MIT
 
-
+Modified by
+-----
+Code Disruptors Inc.
 
 
 <!-- ## Special Thanks
