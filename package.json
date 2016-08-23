@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "npm install && nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "apidoc -i controllers -o apidoc/"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "anytv-node-cors": "0.0.7",
     "anytv-node-importer": "0.0.0",
     "anytv-node-mysql": "0.0.48",
+    "apidoc": "^0.16.1",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "crypto": "0.0.3",
