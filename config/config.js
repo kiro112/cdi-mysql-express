@@ -14,6 +14,8 @@ const config = {
 
     SECRET: 's3cr3t',
 
+    ENCRYPT: 'aes192',
+
     TOKEN_EXPIRATION: 60*60*24*30 * 7, // expires in 7 days
 
     UPLOAD_DIR: path.normalize(__dirname + '/../uploads/'),
