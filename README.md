@@ -10,23 +10,36 @@ Requirements
 1. Download zip
 2. Import `database/schema.sql` and `database/seed.sql`
   ```sh
-  mysql -uroot < database/schema.sql
-  mysql -uroot < database/seed.sql
+  $ mysql -uroot < database/schema.sql
+  $ mysql -uroot < database/seed.sql
   ```
 
 3. Make sure redis server is running in correct PORT and HOST
-
-4. Run this commands :
-  ```sh
-  sudo npm i -g forever
-  sudo npm i -g nodemon
-  sudo npm start
+ ```sh
+  $ redis-server
   ```
 
-5. Using cluster:
+4. Run this commands to get started:
   ```sh
-  nodemon cluster.js
-  forever start cluster.js
+  $ sudo npm i -g forever
+  $ sudo npm i -g nodemon
+  $ sudo npm install
+  ```
+
+5. To run the server using nodemon: 
+  ```sh
+  $ nodemon server.js
+  ```
+
+6. Using cluster:
+  ```sh
+  $ nodemon cluster.js
+  $ forever start cluster.js
+  ```
+
+7. After starting the server, run this commands to check:
+  ```sh
+  $ curl http://localhost:8000
   ```
 
 <!-- ## Special Thanks
