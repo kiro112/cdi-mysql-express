@@ -38,9 +38,7 @@ exports.login = (req, res, next) => {
     function send_response (err, result, args, last_query) {
         let user,
             token,
-            data,
-            encrypted_user,
-            encrypted_token;
+            encrypted = {};
 
         if (err) {
             winston.error('Error in logging in', last_query);
@@ -60,22 +58,18 @@ exports.login = (req, res, next) => {
             email:  result[0].email
         };
 
-        encrypted_user = crypto.encryptSync(user);
+        encrypted.user = crypto.encryptSync(user);
 
-        token = jwt.sign(encrypted_user, config.SECRET, {
+        token = jwt.sign(encrypted, config.SECRET, {
                         expiresIn: config.TOKEN_EXPIRATION
                     });
 
-        data = {
-            id:         user.id,
-            email:      user.email,
-            token:      token
-        };
+        user.token = token;
 
         req.redis.sadd(user.id.toString(), token);
 
         res.set('x-access-token', token)
-           .item(data)
+           .item(user)
            .send();
 
     }
@@ -106,9 +100,9 @@ exports.verify_token = (req, res, next) => {
 
         jwt.verify(token, config.SECRET, (err, user) => {
 
-            const redis  = req.redis,
-                  user   = crypto.decryptSync(user);
-                  userId = user.id.toString();
+            const decrypted = crypto.decryptSync(user.user),
+                  redis     = req.redis,
+                  userId    = decrypted.id.toString();
 
             if (err) {
                 return res.status(404)
@@ -121,7 +115,7 @@ exports.verify_token = (req, res, next) => {
                                   .error('UNAUTH', 'Failed to authenticate token.')
                                   .send();
                     }
-                    req.body.user  = user;
+                    req.body.user  = decrypted;
                     req.body.token = token;
                     next();
                 });
