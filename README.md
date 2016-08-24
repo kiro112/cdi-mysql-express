@@ -223,10 +223,6 @@ License
 -----
 MIT
 
-Modified by
------
-Code Disruptors Inc.
-
 
 <!-- ## Special Thanks
 (https://www.bithound.io/github/anyTV/anytv-node-boilerplate), especially rvnjl <3 -->

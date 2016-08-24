@@ -5,6 +5,7 @@ const winston     = require('winston');
 const jwt         = require('jsonwebtoken');
 const util        = require(__dirname + '/../helpers/util');
 const config      = require(__dirname + '/../config/config');
+const crypto      = require(__dirname + '/../lib/cryptography');
 
 exports.login = (req, res, next) => {
     const data = util._get
@@ -35,7 +36,10 @@ exports.login = (req, res, next) => {
     }
 
     function send_response (err, result, args, last_query) {
-        let user;
+        let user,
+            token,
+            data,
+            encrypted_token;
 
         if (err) {
             winston.error('Error in logging in', last_query);
@@ -52,16 +56,18 @@ exports.login = (req, res, next) => {
             return res.error('LOG_FAIL', 'Incorrect Password');
         }
 
-        let token = jwt.sign(user, config.SECRET, {
+        token = jwt.sign(user, config.SECRET, {
                         expiresIn: config.TOKEN_EXPIRATION
                     });
 
-        let data = {
+        data = {
             id:         user.id,
             email:      user.email,
             password:   user.password,
             token:      token
         };
+
+        encrypted_token = crypto.encryptSync(data);
 
         req.redis.sadd(user.id.toString(), token);
 
