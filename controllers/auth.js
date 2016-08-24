@@ -39,6 +39,7 @@ exports.login = (req, res, next) => {
         let user,
             token,
             data,
+            encrypted_user,
             encrypted_token;
 
         if (err) {
@@ -50,24 +51,26 @@ exports.login = (req, res, next) => {
             return res.error('LOG_FAIL', 'Invalid username');
         }
 
-        user = result[0];
-
-        if (!user.isPasswordValid) {
+        if (!result[0].isPasswordValid) {
             return res.error('LOG_FAIL', 'Incorrect Password');
         }
 
-        token = jwt.sign(user, config.SECRET, {
+        user = {
+            id:     result[0].id,
+            email:  result[0].email
+        };
+
+        encrypted_user = crypto.encryptSync(user);
+
+        token = jwt.sign(encrypted_user, config.SECRET, {
                         expiresIn: config.TOKEN_EXPIRATION
                     });
 
         data = {
             id:         user.id,
-            email:      user.email,
-            password:   user.password,
+            email:      user.email
             token:      token
         };
-
-        encrypted_token = crypto.encryptSync(data);
 
         req.redis.sadd(user.id.toString(), token);
 
@@ -104,6 +107,7 @@ exports.verify_token = (req, res, next) => {
         jwt.verify(token, config.SECRET, (err, user) => {
 
             const redis  = req.redis,
+                  user   = crypto.decryptSync(user);
                   userId = user.id.toString();
 
             if (err) {
