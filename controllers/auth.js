@@ -61,6 +61,7 @@ exports.login = (req, res, next) => {
         encrypted.user = crypto.encryptSync(user);
 
         token = jwt.sign(encrypted, config.SECRET, {
+                        algorithm: config.TOKEN_ALGO,
                         expiresIn: config.TOKEN_EXPIRATION
                     });
 
@@ -98,7 +99,7 @@ exports.verify_token = (req, res, next) => {
 
     if (token) {
 
-        jwt.verify(token, config.SECRET, (err, user) => {
+        jwt.verify(token, config.SECRET, {algorithms : [config.TOKEN_ALGO]}, (err, user) => {
 
             const decrypted = crypto.decryptSync(user.user),
                   redis     = req.redis,
