@@ -2,9 +2,9 @@
 
 Requirements
 -----
-1. MySQL 5.6
+1. MySQL 5.6 (or 5.7)
 2. Redis
-3. Node.js version 5.0 or above
+3. Node.js version 5.0 to 6.4.0
 
 ## Running the application
 1. Download zip
