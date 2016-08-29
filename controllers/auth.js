@@ -101,15 +101,16 @@ exports.verify_token = (req, res, next) => {
 
         jwt.verify(token, config.SECRET, {algorithms : [config.TOKEN_ALGO]}, (err, user) => {
 
-            const decrypted = crypto.decryptSync(user.user),
-                  redis     = req.redis,
-                  userId    = decrypted.id.toString();
-
             if (err) {
                 return res.status(404)
                           .error('UNAUTH', 'Failed to authenticate token.')
                           .send();
             } else {
+
+                const decrypted = crypto.decryptSync(user.user),
+                      redis     = req.redis,
+                      userId    = decrypted.id.toString();
+
                 redis.sismember(userId, token, (err, isMember) => {
                     if (err || !isMember) {
                         return res.status(404)
